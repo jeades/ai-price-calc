@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Model Pricing Calculator — Compare GPT, Claude, Gemini Costs</title>
-    <meta name="description" content="Free AI model pricing calculator. Compare costs for GPT-4o, Claude Opus, Gemini Pro, and more. Estimate your monthly API spend instantly.">
+    <meta name="description" content="Free AI model pricing calculator. Compare costs for GPT-5.2, Claude Opus 4.5, Gemini 3 Pro, and more. Estimate your monthly API spend instantly.">
     <meta name="keywords" content="AI pricing, LLM cost calculator, GPT pricing, Claude pricing, Gemini pricing, API cost comparison">
     <meta property="og:title" content="AI Model Pricing Calculator">
-    <meta property="og:description" content="Compare costs across GPT-4o, Claude, Gemini, and 20+ AI models. Free, instant estimates.">
+    <meta property="og:description" content="Compare costs across GPT-5.2, Claude 4.5, Gemini 3, and 20+ AI models. Free, instant estimates.">
     <meta property="og:type" content="website">
-    <link rel="canonical" href="https://jeevesagents.github.io/ai-price-calc/">
+    <link rel="canonical" href="https://jeades.github.io/ai-price-calc/">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "AI Model Pricing Calculator",
-        "description": "Compare costs across 20+ AI models including GPT-4o, Claude Opus, Gemini Pro",
+        "description": "Compare costs across 20+ AI models including GPT-5.2, Claude 4.5, Gemini 3",
         "applicationCategory": "UtilityApplication",
         "operatingSystem": "Web",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
@@ -133,6 +133,7 @@
         }
         footer a { color: var(--accent2); text-decoration: none; }
         .updated { color: var(--text2); font-size: 0.8rem; text-align: center; margin-bottom: 20px; }
+        .updated a { color: var(--accent2); text-decoration: none; }
         @media (max-width: 768px) {
             .model-card, .header-row {
                 grid-template-columns: 1fr 1fr;
@@ -195,7 +196,7 @@
         </div>
 
         <div class="filter-row" id="filters"></div>
-        <p class="updated">Prices updated February 2026. Sources: official API pricing pages.</p>
+        <p class="updated" id="lastUpdated"></p>
 
         <div class="header-row">
             <span>Model</span>
@@ -208,53 +209,40 @@
 
         <footer>
             <p>Built by <a href="https://x.com/realJeevesAI" target="_blank">@realJeevesAI</a> — an autonomous AI agent powered by <a href="https://openclaw.ai" target="_blank">OpenClaw</a></p>
-            <p style="margin-top:8px;">Prices sourced from official documentation. Always verify with the provider before committing.</p>
+            <p style="margin-top:8px;">Prices sourced from official API documentation. <a href="https://github.com/jeades/ai-price-calc/blob/main/models.json" target="_blank">View data source</a> · <a href="https://github.com/jeades/ai-price-calc/issues" target="_blank">Report outdated prices</a></p>
         </footer>
     </div>
 
     <script>
-    const models = [
-        // OpenAI
-        { name: "GPT-4o", provider: "OpenAI", input: 2.50, output: 10.00, tags: ["openai","flagship"] },
-        { name: "GPT-4o mini", provider: "OpenAI", input: 0.15, output: 0.60, tags: ["openai","budget"] },
-        { name: "GPT-4.1", provider: "OpenAI", input: 2.00, output: 8.00, tags: ["openai","flagship"] },
-        { name: "GPT-4.1 mini", provider: "OpenAI", input: 0.40, output: 1.60, tags: ["openai","budget"] },
-        { name: "GPT-4.1 nano", provider: "OpenAI", input: 0.10, output: 0.40, tags: ["openai","budget"] },
-        { name: "o3", provider: "OpenAI", input: 10.00, output: 40.00, tags: ["openai","reasoning"] },
-        { name: "o3 mini", provider: "OpenAI", input: 1.10, output: 4.40, tags: ["openai","reasoning"] },
-        { name: "o4 mini", provider: "OpenAI", input: 1.10, output: 4.40, tags: ["openai","reasoning"] },
-        // Anthropic
-        { name: "Claude Opus 4", provider: "Anthropic", input: 15.00, output: 75.00, tags: ["anthropic","flagship","reasoning"] },
-        { name: "Claude Sonnet 4", provider: "Anthropic", input: 3.00, output: 15.00, tags: ["anthropic","flagship"] },
-        { name: "Claude Haiku 3.5", provider: "Anthropic", input: 0.80, output: 4.00, tags: ["anthropic","budget"] },
-        // Google
-        { name: "Gemini 2.5 Pro", provider: "Google", input: 1.25, output: 10.00, tags: ["google","flagship","reasoning"] },
-        { name: "Gemini 2.5 Flash", provider: "Google", input: 0.15, output: 0.60, tags: ["google","budget"] },
-        { name: "Gemini 2.0 Flash", provider: "Google", input: 0.10, output: 0.40, tags: ["google","budget"] },
-        // Meta (via API providers)
-        { name: "Llama 4 Maverick", provider: "Meta (via API)", input: 0.20, output: 0.60, tags: ["open-source","budget"] },
-        { name: "Llama 4 Scout", provider: "Meta (via API)", input: 0.10, output: 0.30, tags: ["open-source","budget"] },
-        // Mistral
-        { name: "Mistral Large", provider: "Mistral", input: 2.00, output: 6.00, tags: ["mistral","flagship"] },
-        { name: "Mistral Small", provider: "Mistral", input: 0.10, output: 0.30, tags: ["mistral","budget"] },
-        // DeepSeek
-        { name: "DeepSeek V3", provider: "DeepSeek", input: 0.27, output: 1.10, tags: ["deepseek","budget"] },
-        { name: "DeepSeek R1", provider: "DeepSeek", input: 0.55, output: 2.19, tags: ["deepseek","reasoning"] },
-        // xAI
-        { name: "Grok 3", provider: "xAI", input: 3.00, output: 15.00, tags: ["xai","flagship"] },
-        { name: "Grok 3 mini", provider: "xAI", input: 0.30, output: 0.50, tags: ["xai","budget","reasoning"] },
-    ];
+    // Models loaded from external JSON for easy updates
+    let models = [];
 
-    const allTags = [...new Set(models.flatMap(m => m.tags))].sort();
-    let activeTags = new Set();
+    async function loadModels() {
+        try {
+            const resp = await fetch('models.json');
+            const data = await resp.json();
+            models = data.models;
+            document.getElementById('lastUpdated').innerHTML =
+                `Prices verified ${data.lastUpdated} from official API docs. ` +
+                `<a href="https://github.com/jeades/ai-price-calc/blob/main/models.json">Source data (JSON)</a>`;
+            init();
+        } catch(e) {
+            console.error('Failed to load models.json', e);
+            document.getElementById('results').innerHTML = '<p style="text-align:center;color:#e17055;">Failed to load pricing data.</p>';
+        }
+    }
 
     function init() {
-        const filtersEl = document.getElementById('filters');
+        const allTags = [...new Set(models.flatMap(m => m.tags))].sort();
         const tagLabels = {
             openai: "OpenAI", anthropic: "Anthropic", google: "Google",
             "open-source": "Open Source", mistral: "Mistral", deepseek: "DeepSeek",
             xai: "xAI", flagship: "Flagship", budget: "Budget", reasoning: "Reasoning"
         };
+        const filtersEl = document.getElementById('filters');
+        filtersEl.innerHTML = '';
+        const activeTags = new Set();
+
         allTags.forEach(tag => {
             const btn = document.createElement('button');
             btn.className = 'filter-btn';
@@ -262,18 +250,20 @@
             btn.onclick = () => {
                 if (activeTags.has(tag)) { activeTags.delete(tag); btn.classList.remove('active'); }
                 else { activeTags.add(tag); btn.classList.add('active'); }
-                render();
+                render(activeTags);
             };
             filtersEl.appendChild(btn);
         });
-        document.getElementById('inputTokens').oninput = render;
-        document.getElementById('outputTokens').oninput = render;
-        document.getElementById('requestsPerDay').oninput = render;
-        document.getElementById('sortBy').onchange = render;
-        render();
+
+        const render_ = () => render(activeTags);
+        document.getElementById('inputTokens').oninput = render_;
+        document.getElementById('outputTokens').oninput = render_;
+        document.getElementById('requestsPerDay').oninput = render_;
+        document.getElementById('sortBy').onchange = render_;
+        render(activeTags);
     }
 
-    function render() {
+    function render(activeTags) {
         const inTok = parseInt(document.getElementById('inputTokens').value) || 0;
         const outTok = parseInt(document.getElementById('outputTokens').value) || 0;
         const rpd = parseInt(document.getElementById('requestsPerDay').value) || 0;
@@ -297,8 +287,7 @@
 
         const cheapest = computed.length > 0 ? computed.reduce((a, b) => a.monthly < b.monthly ? a : b).name : null;
 
-        const resultsEl = document.getElementById('results');
-        resultsEl.innerHTML = computed.map(m => {
+        document.getElementById('results').innerHTML = computed.map(m => {
             const isCheapest = m.name === cheapest && sortBy === 'monthly';
             const tier = m.monthly < 10 ? 'cheap' : m.monthly < 100 ? 'mid' : 'pricey';
             return `
@@ -327,7 +316,7 @@
         }).join('');
     }
 
-    init();
+    loadModels();
     </script>
 </body>
 </html>
