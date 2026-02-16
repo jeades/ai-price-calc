@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "February 13, 2026",
+  "lastUpdated": "February 16, 2026",
   "sources": [
     "https://openai.com/api/pricing/",
     "https://platform.claude.com/docs/en/about-claude/pricing",
@@ -15,9 +15,11 @@
     { "name": "o3", "provider": "OpenAI", "input": 10.00, "output": 40.00, "tags": ["openai","reasoning"] },
     { "name": "o3 mini", "provider": "OpenAI", "input": 1.10, "output": 4.40, "tags": ["openai","reasoning"] },
     { "name": "o4 mini", "provider": "OpenAI", "input": 1.10, "output": 4.40, "tags": ["openai","reasoning"] },
+    { "name": "Claude Opus 4.6", "provider": "Anthropic", "input": 5.00, "output": 25.00, "tags": ["anthropic","flagship","reasoning"] },
     { "name": "Claude Opus 4.5", "provider": "Anthropic", "input": 5.00, "output": 25.00, "tags": ["anthropic","flagship","reasoning"] },
     { "name": "Claude Sonnet 4.5", "provider": "Anthropic", "input": 3.00, "output": 15.00, "tags": ["anthropic","flagship"] },
     { "name": "Claude Haiku 4.5", "provider": "Anthropic", "input": 1.00, "output": 5.00, "tags": ["anthropic","budget"] },
+    { "name": "Claude Opus 4.1", "provider": "Anthropic", "input": 15.00, "output": 75.00, "tags": ["anthropic","reasoning"] },
     { "name": "Claude Opus 4", "provider": "Anthropic", "input": 15.00, "output": 75.00, "tags": ["anthropic","reasoning"] },
     { "name": "Claude Sonnet 4", "provider": "Anthropic", "input": 3.00, "output": 15.00, "tags": ["anthropic","flagship"] },
     { "name": "Claude Haiku 3.5", "provider": "Anthropic", "input": 0.80, "output": 4.00, "tags": ["anthropic","budget"] },
